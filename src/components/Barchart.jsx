@@ -54,10 +54,9 @@ export default function Barchart({
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          height="45px"
           viewBox="0 -960 960 960"
-          width="45px"
           fill="#FFFFFF"
+          className="w-8 h-8 md:w-14 md:h-14"
         >
           <path d="M655-80 255-480l400-400 56 57-343 343 343 343-56 57Z" />
         </svg>

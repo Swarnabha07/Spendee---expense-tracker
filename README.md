@@ -14,7 +14,7 @@ A modern Expense Tracker app built with React + Vite, featuring income & expense
   - Line Chart (daily spending trends)  
 - 🧾 **Transaction history list** with amount and category  
 - 🗑️ Option to **delete transactions**  
-- 🎨 Clean, responsive UI with custom styles  
+- 🎨 Clean, responsive UI with custom styles (integrated **shadcn**)
 
 ---
 

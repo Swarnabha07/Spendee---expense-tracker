@@ -15,6 +15,13 @@ import {
   PointElement,
   LineElement,
 } from "chart.js";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 ChartJS.register(
   ArcElement,
@@ -54,8 +61,8 @@ const Manager = () => {
   const [form, setForm] = useState({
     title: "",
     amount: "",
-    category: "Personal",
-    type: "Income",
+    category: "",
+    type: "",
     date: "",
   });
 
@@ -152,8 +159,8 @@ const Manager = () => {
         title: "",
         amount: "",
         date: "",
-        category: "Personal",
-        type: "Income",
+        category: "",
+        type: "",
       });
       setPlus(false);
       setEditingId(null);
@@ -168,8 +175,8 @@ const Manager = () => {
       title: "",
       amount: "",
       date: "",
-      category: "Personal",
-      type: "Income",
+      category: "",
+      type: "",
     });
     setShowDelete(false);
     setPlus(false);
@@ -225,7 +232,7 @@ const Manager = () => {
         title: "",
         amount: "",
         date: "",
-        category: "Personal",
+        category: "",
         type: "Income",
       });
       setPlus(false);
@@ -237,13 +244,15 @@ const Manager = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const filteredTransactions = transactionArray.filter(
-    (item) =>
-      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.amount.toString().includes(searchTerm)
-  );
+  const filteredTransactions = transactionArray
+    .filter(
+      (item) =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.amount.toString().includes(searchTerm)
+    )
+    .reverse();
 
   return (
     <div>
@@ -273,7 +282,7 @@ const Manager = () => {
               <div className="w-[96vw] mx-auto relative mt-25 md:mt-40 ">
                 <div className="flex flex-col justify-center my-8">
                   <input
-                    className="bg-gray-900 p-8 text-xl rounded-xl outline-none hover:bg-gray-800"
+                    className="bg-gray-900 p-4 md:p-8 text-base md:text-xl rounded-xl outline-none hover:bg-gray-800 border-1"
                     type="text"
                     placeholder="Enter title"
                     name="title"
@@ -282,7 +291,7 @@ const Manager = () => {
                   />
                   <div className="flex md:flex-row flex-col gap-2 md:gap-4 my-2 md:my-4">
                     <input
-                      className="md:w-1/2 w-full bg-gray-900 p-8 text-xl rounded-xl outline-none hover:bg-gray-800"
+                      className="md:w-1/2 w-full bg-gray-900 p-4 md:p-8 text-base md:text-xl rounded-xl outline-none hover:bg-gray-800 border-1"
                       type="text"
                       placeholder="Enter amount"
                       name="amount"
@@ -290,7 +299,7 @@ const Manager = () => {
                       onChange={handleChange}
                     />
                     <input
-                      className="md:w-1/2 w-full bg-gray-900 p-8 text-xl rounded-xl outline-none hover:bg-gray-800"
+                      className="md:w-1/2 w-full bg-gray-900 p-4 md:p-8 text-base md:text-xl rounded-xl outline-none hover:bg-gray-800 border-1"
                       type="date"
                       name="date"
                       value={form.date}
@@ -299,43 +308,47 @@ const Manager = () => {
                   </div>
                 </div>
                 <div className="my-16 flex flex-col gap-5">
-                  <label className="text-2xl font-bold">Category</label>
-                  <select
-                    name="category"
+                  <label className="text-xl md:text-2xl font-bold">
+                    Category
+                  </label>
+                  <Select
                     value={form.category}
-                    onChange={handleChange}
-                    id=""
-                    className="w-1/2 bg-gray-900 hover:bg-gray-800 cursor-pointer p-6 rounded-lg outline-none text-xl"
+                    onValueChange={(value) =>
+                      setForm({ ...form, category: value })
+                    }
                   >
-                    {categories.map((item, index) => {
-                      return (
-                        <option key={index} value={item}>
+                    <SelectTrigger className="w-1/2 bg-gray-900 hover:bg-gray-800 p-6 rounded-lg text-base md:text-xl">
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-900 text-white">
+                      {categories.map((item) => (
+                        <SelectItem key={item} value={item}>
                           {item}
-                        </option>
-                      );
-                    })}
-                  </select>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="my-16 flex flex-col gap-5">
-                  <label className="text-2xl font-bold">Type</label>
-                  <select
-                    name="type"
+                  <label className="text-xl md:text-2xl font-bold">Type</label>
+                  <Select
                     value={form.type}
-                    onChange={handleChange}
-                    id=""
-                    className="w-1/2 bg-gray-900 hover:bg-gray-800 cursor-pointer p-6 rounded-lg outline-none text-xl"
+                    onValueChange={(value) => setForm({ ...form, type: value })}
                   >
-                    {types.map((item, index) => {
-                      return (
-                        <option key={index} value={item}>
+                    <SelectTrigger className="w-1/2 bg-gray-900 hover:bg-gray-800 p-6 rounded-lg text-base md:text-xl">
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-900 text-white">
+                      {types.map((item) => (
+                        <SelectItem key={item} value={item}>
                           {item}
-                        </option>
-                      );
-                    })}
-                  </select>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <button
-                  className="absolute text-2xl font-bold bottom-0 right-0 md:bottom-0 md:right-0 bg-gray-800 hover:bg-gray-700 cursor-pointer px-10 py-5 rounded-xl transition-all ease-in-out"
+                  className="absolute text-lg md:text-2xl font-bold bottom-0 right-0 md:bottom-0 md:right-0 bg-gray-800 hover:bg-gray-700 cursor-pointer px-10 py-3 md:py-5 rounded-xl transition-all ease-in-out border"
                   onClick={() => {
                     handleAdd();
                   }}
@@ -345,7 +358,7 @@ const Manager = () => {
 
                 {showDelete && (
                   <button
-                    className="absolute text-2xl font-bold bottom-25 right-0 md:bottom-0 md:right-40 bg-gray-800 hover:bg-gray-700 cursor-pointer px-7 md:px-10 py-5 rounded-xl transition-all ease-in-out"
+                    className="absolute text-lg md:text-2xl font-bold bottom-25 right-0 md:bottom-0 md:right-40 bg-gray-800 hover:bg-gray-700 cursor-pointer px-7 md:px-10 py-3 md:py-5 rounded-xl transition-all ease-in-out border"
                     onClick={() => {
                       handleDelete(form.id);
                     }}
@@ -362,10 +375,9 @@ const Manager = () => {
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  height="45px"
                   viewBox="0 -960 960 960"
-                  width="45px"
                   fill="#FFFFFF"
+                  className="w-8 h-8 md:w-14 md:h-14"
                 >
                   <path d="M655-80 255-480l400-400 56 57-343 343 343 343-56 57Z" />
                 </svg>
@@ -475,16 +487,16 @@ const Manager = () => {
                   setPlus(true);
                   setSearchTerm("");
                 }}
-                className="bg-gray-700 rounded-full p-6 cursor-pointer 
+                className="bg-gray-700 rounded-full p-3 md:p-6 cursor-pointer 
               hover:bg-gray-500 hover:rotate-180 
               shadow-lg hover:shadow-2xl 
               transition-all duration-500 fixed md:right-10 md:bottom-10 right-4 bottom-6"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  height="46px"
+                  height="40px"
                   viewBox="0 -960 960 960"
-                  width="46px"
+                  width="40px"
                   fill="#ffffff"
                 >
                   <path d="M433-95v-338H95v-94h338v-339h94v339h339v94H527v338h-94Z" />
@@ -495,7 +507,7 @@ const Manager = () => {
                   setIsOpen(true);
                   setSearchTerm("");
                 }}
-                className="bg-gray-700 rounded-full p-6 cursor-pointer 
+                className="bg-gray-700 rounded-full p-3 md:p-6 cursor-pointer 
               hover:bg-gray-500
               shadow-lg hover:shadow-2xl 
               transition-all duration-500 fixed md:left-10 md:bottom-10 left-4 bottom-6 text-white"
@@ -504,7 +516,7 @@ const Manager = () => {
                   src="https://cdn.lordicon.com/kwnsnjyg.json"
                   trigger="hover"
                   colors="primary:#ffffff"
-                  style={{ width: "45px", height: "45px" }}
+                  style={{ width: "40px", height: "40px" }}
                 ></lord-icon>
               </button>
             </div>
